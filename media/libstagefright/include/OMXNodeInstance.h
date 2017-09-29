@@ -21,7 +21,6 @@
 #include "OMX.h"
 
 #include <utils/RefBase.h>
-#include <utils/SortedVector.h>
 #include <utils/threads.h>
 
 namespace android {
@@ -72,7 +71,7 @@ struct OMXNodeInstance {
 
     status_t useBuffer(
             OMX_U32 portIndex, const sp<IMemory> &params,
-            OMX::buffer_id *buffer, OMX_U32 allottedSize, OMX_BOOL crossProcess);
+            OMX::buffer_id *buffer, OMX_U32 allottedSize);
 
     status_t useGraphicBuffer(
             OMX_U32 portIndex, const sp<GraphicBuffer> &graphicBuffer,
@@ -102,7 +101,7 @@ struct OMXNodeInstance {
 
     status_t allocateBufferWithBackup(
             OMX_U32 portIndex, const sp<IMemory> &params,
-            OMX::buffer_id *buffer, OMX_U32 allottedSize, OMX_BOOL crossProcess);
+            OMX::buffer_id *buffer, OMX_U32 allottedSize);
 
     status_t freeBuffer(OMX_U32 portIndex, OMX::buffer_id buffer);
 
@@ -140,7 +139,7 @@ struct OMXNodeInstance {
     static OMX_CALLBACKTYPE kCallbacks;
 
 private:
-    Mutex mLock;
+ Mutex mLock;
 
     OMX *mOwner;
     OMX::node_id mNodeID;
@@ -194,8 +193,6 @@ private:
     OMX_BUFFERHEADERTYPE *findBufferHeader(OMX::buffer_id buffer, OMX_U32 portIndex);
     OMX::buffer_id findBufferID(OMX_BUFFERHEADERTYPE *bufferHeader);
     void invalidateBufferID(OMX::buffer_id buffer);
-
-    bool isProhibitedIndex_l(OMX_INDEXTYPE index);
 
     status_t useGraphicBuffer2_l(
             OMX_U32 portIndex, const sp<GraphicBuffer> &graphicBuffer,
